@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-navy-900 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-blue-900 text-xl font-bold">Uçak Montajı</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <form action="{% url 'dashboard' %}" method="get">
+                            <button type="submit" class="text-blue-900 hover:text-blue-200 px-3 py-2 rounded-md">
+                                Dashboard'a Dön
+                            </button>
+                        </form>
+                        <a href="{% url 'logout' %}" class="text-blue-900 hover:text-blue-200 px-3 py-2 rounded-md">
+                            Çıkış Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <!-- Messages -->
+            {% if messages %}
+            <div class="mb-8">
+                {% for message in messages %}
+                <div class="rounded-md p-4 {% if message.tags == 'success' %}bg-green-50 text-green-700{% elif message.tags == 'error' %}bg-red-50 text-red-700{% else %}bg-blue-50 text-blue-700{% endif %}">
+                    <p class="text-sm">{{ message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Assembly Form -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label for="aircraft" class="block text-sm font-medium text-gray-700">Uçak Seçin:</label>
+                        <select name="aircraft" id="aircraft" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            {% for aircraft in aircrafts %}
+                                <option value="{{ aircraft.id }}">{{ aircraft.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Uçak Üret
+                    </button>
+                </form>
+            </div>
+
+            <!-- Stock Information -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Stoklar:</h3>
+                <div class="space-y-4">
+                    {% for aircraft in aircrafts %}
+                    <div class="border rounded-lg p-4">
+                        <h4 class="text-md font-semibold text-gray-800 mb-2">{{ aircraft.name }}</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for part in aircraft.part_set.all %}
+                            <div class="bg-gray-50 rounded-md p-3">
+                                <span class="text-sm text-gray-600">{{ part.get_name_display }}</span>
+                                <div class="mt-1 text-sm font-medium text-gray-900">
+                                    Stok: {{ part.stock }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

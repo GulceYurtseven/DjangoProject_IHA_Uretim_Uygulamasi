@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-navy-900 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-blue-900 text-xl font-bold">{{ team }} Dashboard</h1>
+                    </div>
+                    <div class="flex items-center">
+                        <a href="{% url 'logout' %}" class="text-blue-900 hover:text-blue-200 px-3 py-2 rounded-md">Çıkış Yap</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            {% if team == "Montaj" %}
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Montaj Takımı İçin Uçak Üretim Formu</h3>
+
+                <div class="space-y-4">
+                    <form method="POST" action="{% url 'aircraft_assemble' %}" class="mb-4">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Uçak Üret
+                        </button>
+                    </form>
+
+                    <form action="{% url 'aircraft_list' %}" method="get">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                            Uçak Listesi
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <form method="POST" action="{% url 'stock_change' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label for="aircraft" class="block text-xl font-bold text-gray-700">Uçak Seç:</label>
+                        <select name="aircraft" id="aircraft" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            {% for aircraft in aircrafts %}
+                                <option value="{{ aircraft.id }}">{{ aircraft.get_name_display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Parça Üret
+                    </button>
+                </form>
+
+                <form action="{% url 'list_team_parts' %}" method="get" class="mt-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                        Parça Listesi
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
