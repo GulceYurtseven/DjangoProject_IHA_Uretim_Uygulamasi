@@ -1,0 +1,1 @@
+# DjangoProject_IHA_Uretim_Uygulamasi
