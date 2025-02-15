@@ -99,3 +99,7 @@ Tüm uçaklar ve üretilmesi için gerekli parçaları stok sayısıyla birlikte
 
 Montaj takımı tüm uçakları ve uçakların parçalarını listeleyebilir
 ![image](https://github.com/user-attachments/assets/096e0980-dea8-4519-94d9-d364c1f72b58)
+
+### Database
+![image](https://github.com/user-attachments/assets/677bf8fb-b43b-4599-82ce-792a5b6469bc)
+
